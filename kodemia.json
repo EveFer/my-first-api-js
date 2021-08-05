@@ -1,0 +1,29 @@
+{
+    "koders": [
+        {
+            "name": "Carlos Velasquez",
+            "generation": 12
+        },
+        {
+            "name": "Juan Pi",
+            "generation": 10
+        },
+        {
+            "name": "Fernanda",
+            "generation": 7
+        },
+        {
+            "name": "Vero",
+            "generation": 10
+        },
+        {
+            "name": "Cintia",
+            "generation": 10
+        }
+    ],
+    "mentors": [
+        {
+            
+        }
+    ]
+}
