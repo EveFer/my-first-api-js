@@ -1,29 +1,40 @@
 {
-    "koders": [
-        {
-            "name": "Carlos Velasquez",
-            "generation": 12
-        },
-        {
-            "name": "Juan Pi",
-            "generation": 10
-        },
-        {
-            "name": "Fernanda",
-            "generation": 7
-        },
-        {
-            "name": "Vero",
-            "generation": 10
-        },
-        {
-            "name": "Cintia",
-            "generation": 10
-        }
-    ],
-    "mentors": [
-        {
-            
-        }
-    ]
+  "koders": [
+    {
+      "id": 1,
+      "name": "Carlos Velasquez",
+      "generation": 12,
+      "gender": "m"
+    },
+    {
+      "id": 2,
+      "name": "Juan",
+      "generation": 10,
+      "gender": "m"
+    },
+    {
+      "id": 4,
+      "name": "Vero",
+      "generation": 10,
+      "gender": "f"
+    },
+    {
+      "id": 5,
+      "name": "Cintia",
+      "generation": 10,
+      "gender": "f"
+    },
+    {
+      "id": 6,
+      "generation": 12,
+      "name": "Antonio",
+      "gender": "m"
+    },
+    {
+      "id": 7,
+      "generation": 12,
+      "name": "Oscar",
+      "gender": "m"
+    }
+  ]
 }

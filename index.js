@@ -16,7 +16,8 @@ function readFilePromise(pathToRead) {
             if (err) {
                 reject(err)
             }else {
-                resolve(content)
+                const json = JSON.parse(content) // de un string a un objeto
+                resolve(json)
             }
         })
     })
@@ -26,44 +27,136 @@ function readFilePromise(pathToRead) {
 // middleware
 server.use(express.json());
 
-server.get('/hola', (request, response) => {
-    response.write('Hola mundo desde express')
-    response.end()
-})
+// Query params
+server.get('/koders', async (request, response) => {
+    // console.log(request.query)
+    const {generation} = request.query
+    const content = await readFilePromise('kodemia.json')
 
-server.get('/koders', (request, response) => {
-    // response.setHeader('Content-Type', 'application/json')
-    // const responseObj = {message: 'Hola'}
+    let kodersByGeneration = null
+
+    // string -> true
+    // indefinido -> false
+    if(generation) {
+      kodersByGeneration = content.koders.filter(koder => koder.generation === parseInt(generation))
+    }
     
-    // response.write(JSON.stringify(responseObj))
-    // response.end()
+    content.koders = kodersByGeneration || content.koders
+
     response.status(200).json({
-        message: 'Hola Koders'
+        success: true,
+        message: 'All Koders',
+        data: {
+            koders: content.koders
+        }
     })
 })
 
-server.post('/koders', (request, response) => {
-    const body = request.body
-    console.log('Body: ', body)
+// Filtrado que sea por genero.
+// Filter que sea por name
+// ?gender='m'&name='Jose'
 
-    response.status(201).json({
-        message: 'Aqui se creará un koder'
+
+server.post('/koders', async (request, response) => {
+    const newKoder = request.body
+    const content = await readFilePromise('kodemia.json')
+
+    content.koders.push(newKoder)
+
+    fs.writeFileSync('kodemia.json', JSON.stringify(content, null, 2), 'utf8')
+
+    response.status(201)
+    response.json({
+        success: true,
+        message: 'Koders Added',
+        data: {
+            koder: newKoder
+        }
     })
 })
 
+// Sintanxis Universal
 
-server.get('/read', (req, res) => {
-    readFilePromise('kodemia.json')
-        .then((content) => {
-            const contentObject = JSON.parse(content);
-            res.json({
-                koders: contentObject.koders
-            })
-        })
-        .catch((err) => {
-            res.status(400).json({error: 'No se pudo leer el archivo'})
-        })
+// METHOD /recurso/identificador
+// PATCH /koders/:id
+// PATCH /koders/12
+// PATCH /koders/123
+// PATCH /koders/2
+server.patch('/koders/:id', async (request, response) => {
+    const { id } = request.params
+    const {name, generation} =  request.body
+    
+    const content = await readFilePromise('kodemia.json')
+
+    const newKoders = content.koders.map((koder) => {
+        if (koder.id === parseInt(id)) {
+            if(!name) {
+                koder = {...koder, generation}
+            }else if(!generation){
+                koder = {...koder, name}
+            }else {
+                koder = {...koder, name, generation}
+            }
+        }
+        return koder
+    })
+
+    content.koders = newKoders
+
+    fs.writeFileSync('kodemia.json', JSON.stringify(content, null, 2), 'utf8')
+
+    response.json({
+        success: true,
+        message: 'Koder Updated'
+    })
 })
+
+server.get('/koders/:id', async (request, response) => {
+    const {id} =  request.params
+    const content = await readFilePromise('kodemia.json')
+
+    const koderFound = content.koders.find(koder => koder.id === parseInt(id))
+
+    if(!koderFound) {
+        response.status(404)
+        response.json({
+            success: false,
+            message: 'Koder Not Found'
+        })
+    }else {
+        response.json({
+            success: true,
+            message: 'KoderFound',
+            data: {
+                koder: koderFound
+            }
+        })
+    }
+})
+
+server.delete('/koders/:id', async (request, response) => {
+    const {id} =  request.params
+    const content = await readFilePromise('kodemia.json')
+
+    const kodersFiltered = content.koders.filter(koder => koder.id !== parseInt(id))
+
+    content.koders = kodersFiltered
+
+    fs.writeFileSync('kodemia.json', JSON.stringify(content, null, 2), 'utf8')
+
+    response.json({
+        success: true,
+        message: 'Koder Deleted'
+    })
+})
+
+// Práctica:
+// DELETE /koders/:id
+// GET /koders/:id
+
+
+// PUT /koders/:id
+
 
 
 // fs + express
@@ -72,6 +165,7 @@ server.get('/read', (req, res) => {
 // POST /koders ->
 
 
+// https://www.google.com/search?q=google&oq=goo&aqs=chrome.0.69i59j69i57j69i59j69i60l5.828j0j1&sourceid=chrome&ie=UTF-8
 
 
 
