@@ -36,5 +36,39 @@
       "name": "Oscar",
       "gender": "m"
     }
+  ],
+  "mentors": [
+    {
+      "name": "Mels",
+      "module": "Hello Koder"
+    },
+    {
+      "name": "Oso",
+      "module": "Hello Koder"
+    },
+    {
+      "name": "Isra",
+      "module": "Maquetado"
+    },
+    {
+      "name": "Isra",
+      "module": "JavaScript"
+    },
+    {
+      "name": "Alfred",
+      "module": "Backend"
+    },
+    {
+      "name": "Isra",
+      "module": "Backend"
+    },
+    {
+      "name": "Charles",
+      "module": "Backend"
+    },
+    {
+      "name": "Fers",
+      "module": "Backend"
+    }
   ]
 }
